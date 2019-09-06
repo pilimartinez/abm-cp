@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" rel="stylesheet">
+    <title>ABM</title>
+</head>
+<body>
+<div>
+    <header>
+    <h1>Manage Employees</h1>
+    <a href="#"><i class="fas fa-plus"></i>Add New Employee</a>
+    </header>
+    <div>
+        <input placeholder="Filter...">
+    </div>
+    <table class="dataTable">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th> 
+                <th>Address</th>
+                <th>Phone</th> 
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="container">
+      
+        </tbody>
+    </table>   
+</div> 
+<div id="modal">
+    <header class="modal-header">
+        <h3>Add Employee</h3>
+        <a href="#">X</a>
+    </header>
+    <form>
+        <label>Name</label>
+        <input>
+        <label>Email</label>
+        <input>
+        <label>Address</label>
+        <input>
+        <label>Phone</label>
+        <input>
+    </form>
+    <footer>
+        <a href="#" class="cancel-btn">Cancel</a>
+        <a href="#" class="add-btn">Add</a>
+    </footer>
+</div>
+</body>
+</html>
