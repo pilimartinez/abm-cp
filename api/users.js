@@ -1,6 +1,6 @@
 const users = [
-    {nombre: 'Pili', apellido: 'Lovelace',telefono: '46020289', email: 'satisfaceamauricio@gmail.com'}, 
-    {nombre: 'Ceci', apellido: 'Hopper', telefono: '45032212', email: 'cariciasignificativa@hotmail.com'}
+    {'name': 'Pili Lovelace', 'email': 'satisfaceamauricio@gmail.com', 'address': 'Caminito 345', 'phone': '46020289'}, 
+    {'name': 'Ceci Hopper', 'email': 'cariciasignificativa@hotmail.com', 'address':'Paseo Colon 678','phone': '45032212'}
 ]
 
 const handler = (req, res, next) => {

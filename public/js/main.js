@@ -1,85 +1,109 @@
+//Magia Con Bello Modal
+const showModal = () => {
+    let modal = document.getElementById("modal");
+    if (modal.style.display === "block") {
+        modal.style.display = "none";
+    } else {
+        modal.style.display = "block";
+    }
+}
+
+//De acá para adelante vamos a trabajar con datos. Tal vez queramos hacer módulos o algo así
 let list = []
 
-//Acá le podría pasar list por parámetro? quiero?
-fetch('/api/users')
-    .then(response => response.json())
-    .then(res =>list =[])
+//Acá le podría pasar list por parámetro? quiero? Sería traer de la api y poner todo en pantalla
+const initialize = () => {
+    fetch('/api/users')
+        .then(response => response.json())
+        .then(res => {
+            list = res.users
+            printList()
+        })
+}
 
 //Tomo los valores del modal:
-var addNew = (list) =>{
+var addNew = () => {
+    //Me interesa una cosa que no me acuerdo sobre instanciamiento de datos
     const name = document.getElementById('name').value
     const email = document.getElementById('email').value
     const address = document.getElementById('address').value
     const phone = document.getElementById('phone').value
-// Acá vamos a querer validación y tal vez limpiar el value de todo, veremos  
-    list.push({"name":name, "email":email, "address":address, "phone": phone}) 
-    printTask()
+    const newItem = {"name":name, "email":email, "address":address, "phone": phone}
+    // Acá vamos a querer validación y limpiar el value de todo, veremos cómo se hace
+    // valida todos los campos completos y algunas características que están en el enunciado 
+    list.push(newItem) //esto seguro será reemplazado por push al servidor
+    printList()
 }
 
-
-var allTasks=[]
-var btn, completed, containerButtons, item, listItem, listItemContent, newTask, toDo
-
-//Esto sé que hacía algo al apretar enter
-var keyPress=function(event){
-    event.code === 'Enter'?addTask():false
+// Esto sé que hacía algo al apretar enter. Me parece que no lo vamos a querer, 
+// salvo que sea en el último input. O por ahí si verificamos que están todos los campos llenos.
+// también ver que en el filtrado está más piola como queda
+// Veamo
+const keyPress = (event) => {
+    event.code === 'Enter'?addNew():false
 }
 
-//Esta era para el botón de pasar a hecho. No lo necesitamos
-var toggleTask = function (btn) {
-    allTasks[btn.id].isCompleted=!allTasks[btn.id].isCompleted
-    printTask()
+// Esta para editar. Puse cualquiera, debería traer el dato completo en vez de estar vacío
+const editItem = (btn) => {
+    showModal()
+    printList()
 }
 
-//Esta sí la vamos a usar, es del botón de borrar.
-var deleteTask=function (btn) {
-    allTasks.splice (btn.id,1)
-    printTask()
+//Esta es el botón de borrar pero seguro cambia porque esto no va al servidor
+const deleteItem = (btn) => {
+    list.splice (btn.id,1)
+    printList()
 }
 
-//Esta es para crear botones
-var createButton=function(classBtn, index, btnFunction){
+//Esta es para crear botones. Hay que darles amor, pobres chiquitines.
+var createButton = (classBtn, index, btnFunction) => {
     btn=document.createElement('button')
+    btn.innerText=classBtn
     btn.classList.add(classBtn)
     btn.id=index
     btn.onclick=function(){btnFunction(this)}
     return btn
 }
 
-//Esta creo que creaba un elemento nuevo, así que la queremos
-
-var createLi = function (task,index) {
-    listItem = document.createElement('li')
-            
-    listItemContent=document.createElement('p')
-    listItemContent.innerText=task.text
-    
-    containerButtons=document.createElement('div')
+//Esta crea una fila nueva, por favor veámosla, la veo tan horrible.
+var createRow = (newItem,index) => {
+    const newRow = document.createElement('tr')
+    const newNameCell=document.createElement('td')
+    newNameCell.innerText=newItem.name
+    newRow.appendChild(newNameCell)
+    const newEmailCell=document.createElement('td')
+    newEmailCell.innerText=newItem.email
+    newRow.appendChild(newEmailCell)
+    const newAddressCell=document.createElement('td')
+    newAddressCell.innerText=newItem.address
+    newRow.appendChild(newAddressCell)
+    const newPhoneCell=document.createElement('td')
+    newPhoneCell.innerText=newItem.phone
+    newRow.appendChild(newPhoneCell)
+    const containerButtons=document.createElement('td')
     containerButtons.classList.add('button')
-    containerButtons.appendChild(createButton('toggle', index,toggleTask))
-    containerButtons.appendChild(createButton('remove',index,deleteTask))
-    containerButtons.appendChild(createButton('edit',index,createNewInput))
-
-    listItem.appendChild(listItemContent)
-    listItem.appendChild(containerButtons)
-
-    return listItem
+    containerButtons.appendChild(createButton('edit',index,editItem))
+    containerButtons.appendChild(createButton('remove',index,deleteItem))
+    newRow.appendChild(containerButtons)
+       
+    return newRow
 }
 
-//La función genérica!!!
-var printTask=function(){
-    toDo=document.getElementById('toDo')
-    toDo.innerHTML=''
-
-    completed=document.getElementById('completed')
-    completed.innerHTML=''
-    
-    allTasks.map(function(task, index){
-        task.isCompleted? completed.appendChild (createLi(task,index)) : toDo.appendChild (createLi(task,index))
-    })
-
-    //este pedacito adicional imprime el textito cuando no hay tareas
-    textWhenEmpty(toDo, '¡No hay tareas pendientes!')
-    textWhenEmpty(completed, 'No hay tareas terminadas.')
+//La función genérica!!! Querré pasarle la lista por parámetro? Ver
+const printList = () => {
+    const container = document.getElementById('container')
+    container.innerHTML=''
+    list.map((newItem, index) => container.appendChild (createRow(newItem,index)))
 }
 
+//La función de filtrado también puede ir aparte tranquilamente
+//La base es esta pero no sé debería haber otra api con keywords o algo???
+const filter = () => {
+    let query = event.target.value
+    if (query.length>=3 || (event.keyCode===13 && query!==lastRequest)) {
+        lastRequest=query
+        fetch ('/api/users')
+            .then(res=>res.json())
+            .then(res=>printList())
+    }
+}
