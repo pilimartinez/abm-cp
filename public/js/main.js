@@ -24,14 +24,20 @@ const initialize = () => {
 //Tomo los valores del modal:
 var addNew = () => {
     //Me interesa una cosa que no me acuerdo sobre instanciamiento de datos
-    const name = document.getElementById('name').value
-    const email = document.getElementById('email').value
-    const address = document.getElementById('address').value
-    const phone = document.getElementById('phone').value
-    const newItem = {"name":name, "email":email, "address":address, "phone": phone}
-    // Acá vamos a querer validación y limpiar el value de todo, veremos cómo se hace
+    const name = document.getElementById('name')
+    const email = document.getElementById('email')
+    const address = document.getElementById('address')
+    const phone = document.getElementById('phone')
+    const newItem = {"name":name.value, "email":email.value, "address":address.value, "phone": phone.value}
+    //Esto se podrá hacer más prolijo?
+    name.value =""
+    email.value =""
+    address.value =""
+    phone.value =""
+    // Acá vamos a querer validación, veremos cómo se hace
     // valida todos los campos completos y algunas características que están en el enunciado 
     list.push(newItem) //esto seguro será reemplazado por push al servidor
+    showModal()
     printList()
 }
 
@@ -102,8 +108,8 @@ const filter = () => {
     let query = event.target.value
     if (query.length>=3 || (event.keyCode===13 && query!==lastRequest)) {
         lastRequest=query
+    //recorro list.name y traigo todo lo que tiene un string que coincide?    
         fetch ('/api/users')
             .then(res=>res.json())
             .then(res=>printList())
-    }
-}
+}}
