@@ -13,7 +13,7 @@
 <div id="main-info">
     <header id="main-header">
     <h1>Manage Employees</h1>
-    <a href="#" class="new-data"><i class="fas fa-plus"></i>Add New Employee</a>
+    <a href="#" class="new-data" onclick="showModal()"><i class="fas fa-plus"></i>Add New Employee</a>
     </header>
     <div class="filter-div">
         <input placeholder="Filter...">
@@ -34,8 +34,8 @@
 </div> 
 <div id="modal">
     <header class="modal-header">
-        <h3>Add Employee</h3>
-        <a href="#">X</a>
+        <h3>Add Employee</h3> 
+        <a href="#" onclick="showModal()">X</a>
     </header>
     <form>
         <label>Name</label>
@@ -48,7 +48,7 @@
         <input>
     </form>
     <footer>
-        <a href="#" class="cancel-btn">Cancel</a>
+        <a href="#" class="cancel-btn" onclick="showModal()">Cancel</a>
         <a href="#" class="add-btn">Add</a>
     </footer>
 </div>

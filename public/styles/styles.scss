@@ -7,6 +7,7 @@
 }
 
 body{
+    z-index: 0;
     background-color: #F2CB05;
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
@@ -69,6 +70,11 @@ body{
   #modal{
       background-color: white;
       width: 35%;
+      display: none;
+      position: fixed;
+        top:25%;
+        left:30%;
+        z-index: 99;
       .modal-header{
           display: flex;
           border-bottom: 1px solid grey;
@@ -80,6 +86,10 @@ body{
           a{
             color: black;
             margin: 0 10px;
+            &:hover{
+                color: red;
+                transition: 0.4s;
+            }
           }
       }
       form{
@@ -104,6 +114,10 @@ body{
             border-radius: 5px;
             color: black;
             background-color: greenyellow;
+            &:hover{
+                background-color: pink;
+                transition: 0.4s;
+            }
           }
       }
   }
