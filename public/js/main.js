@@ -28,18 +28,21 @@ var addNew = () => {
     const email = document.getElementById('email')
     const address = document.getElementById('address')
     const phone = document.getElementById('phone')
-    const newItem = {"name":name.value, "email":email.value, "address":address.value, "phone": phone.value}
+    
 //validacion pedorra, solo ve si esta todo completo.
 //cuando hay cosas incompletas, limpia todos los campos (arreglar)
-    if (name.value.length && email.value.length && address.value.length && phone.value.length != 0) 
-   {list.push(newItem) && showModal()} else 
-   {alert("Todos los campos deben estar completos")}
-    name.value =""
-    email.value =""
-    address.value =""
-    phone.value =""
-
-    printList()
+    if (name.value.length && email.value.length && address.value.length && phone.value.length != 0) {
+        const newItem = {"name":name.value, "email":email.value, "address":address.value, "phone": phone.value}
+        list.push(newItem) 
+        showModal()
+        name.value =""
+        email.value =""
+        address.value =""
+        phone.value =""
+        printList()
+    } else { 
+        alert("Todos los campos deben estar completos")
+    }
 }
 
 // Esto sé que hacía algo al apretar enter. Me parece que no lo vamos a querer, 
@@ -72,7 +75,6 @@ var createButton = (classBtn, btnFunction) => {
 }
 
 // crea nueva row, botones incluidos
-
 const createTr = (list) => {
     let container = document.getElementById('container')
     container.innerHTML = ''
