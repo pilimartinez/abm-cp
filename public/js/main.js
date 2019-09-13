@@ -29,15 +29,16 @@ var addNew = () => {
     const address = document.getElementById('address')
     const phone = document.getElementById('phone')
     const newItem = {"name":name.value, "email":email.value, "address":address.value, "phone": phone.value}
-    //Esto se podrá hacer más prolijo?
+//validacion pedorra, solo ve si esta todo completo.
+//cuando hay cosas incompletas, limpia todos los campos (arreglar)
+    if (name.value.length && email.value.length && address.value.length && phone.value.length != 0) 
+   {list.push(newItem) && showModal()} else 
+   {alert("Todos los campos deben estar completos")}
     name.value =""
     email.value =""
     address.value =""
     phone.value =""
-    // Acá vamos a querer validación, veremos cómo se hace
-    // valida todos los campos completos y algunas características que están en el enunciado 
-    list.push(newItem) //esto seguro será reemplazado por push al servidor
-    showModal()
+
     printList()
 }
 
@@ -62,44 +63,37 @@ const deleteItem = (btn) => {
 }
 
 //Esta es para crear botones. Hay que darles amor, pobres chiquitines.
-var createButton = (classBtn, index, btnFunction) => {
+var createButton = (classBtn, btnFunction) => {
     btn=document.createElement('button')
     btn.innerText=classBtn
     btn.classList.add(classBtn)
-    btn.id=index
     btn.onclick=function(){btnFunction(this)}
     return btn
 }
 
-//Esta crea una fila nueva, por favor veámosla, la veo tan horrible.
-var createRow = (newItem,index) => {
-    const newRow = document.createElement('tr')
-    const newNameCell=document.createElement('td')
-    newNameCell.innerText=newItem.name
-    newRow.appendChild(newNameCell)
-    const newEmailCell=document.createElement('td')
-    newEmailCell.innerText=newItem.email
-    newRow.appendChild(newEmailCell)
-    const newAddressCell=document.createElement('td')
-    newAddressCell.innerText=newItem.address
-    newRow.appendChild(newAddressCell)
-    const newPhoneCell=document.createElement('td')
-    newPhoneCell.innerText=newItem.phone
-    newRow.appendChild(newPhoneCell)
-    const containerButtons=document.createElement('td')
-    containerButtons.classList.add('button')
-    containerButtons.appendChild(createButton('edit',index,editItem))
-    containerButtons.appendChild(createButton('remove',index,deleteItem))
-    newRow.appendChild(containerButtons)
-       
-    return newRow
-}
+// crea nueva row, botones incluidos
 
-//La función genérica!!! Querré pasarle la lista por parámetro? Ver
+const createTr = (list) => {
+    let container = document.getElementById('container')
+    container.innerHTML = ''
+    list.forEach(field => {
+       let tr = document.createElement('tr')
+       const containerButtons=document.createElement('td')
+       containerButtons.classList.add('button')
+       containerButtons.appendChild(createButton('Edit', editItem))
+       containerButtons.appendChild(createButton('Remove', deleteItem))
+       Object.keys(field).forEach( e=> {
+          let td = document.createElement('td')
+        td.innerText = field[e]
+          tr.appendChild(td)
+          tr.appendChild(containerButtons)
+       })
+       container.appendChild(tr)
+    })
+  }
+
 const printList = () => {
-    const container = document.getElementById('container')
-    container.innerHTML=''
-    list.map((newItem, index) => container.appendChild (createRow(newItem,index)))
+    createTr(list)
 }
 
 //La función de filtrado también puede ir aparte tranquilamente
