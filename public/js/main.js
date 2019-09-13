@@ -22,7 +22,7 @@ const initialize = () => {
 }
 
 //Tomo los valores del modal:
-var addNew = () => {
+const addNew = () => {
     //Me interesa una cosa que no me acuerdo sobre instanciamiento de datos
     const name = document.getElementById('name')
     const email = document.getElementById('email')
@@ -67,7 +67,7 @@ var createButton = (classBtn, index, btnFunction) => {
     btn.innerText=classBtn
     btn.classList.add(classBtn)
     btn.id=index
-    btn.onclick=function(){btnFunction(this)}
+    btn.onclick=()=>{btnFunction(this)}
     return btn
 }
 
@@ -94,6 +94,31 @@ var createRow = (newItem,index) => {
        
     return newRow
 }
+
+const createTr = (list) => {
+    let container = document.getElementById("container")
+    container.innerHTML = ''
+    list.forEach(sale => {
+       let tr = document.createElement('tr')
+       Object.keys(sale).forEach( e=> {
+          let td = document.createElement('td')
+          if (e === 'saleDate'){
+             td.innerText = `${sale[e].getFullYear()},${sale[e].getMonth()+1},${sale[e].getDate()}`
+          } else {
+             td.innerText =  sale[e]
+          }
+          tr.appendChild(td)
+       })
+       container.appendChild(tr)
+    })
+} 
+
+
+
+
+
+
+
 
 //La función genérica!!! Querré pasarle la lista por parámetro? Ver
 const printList = () => {
