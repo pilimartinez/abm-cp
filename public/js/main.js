@@ -17,21 +17,25 @@ const initialize = () => {
         .then(response => response.json())
         .then(res => {
             list = res.users
-            printList()
+            createTr(list)
         })
 }
 
+let valid = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+const emailIsValid = correo => valid.test(correo);
+const isFilled = input => {
+   if (input.value.length !=0) {return isFilled}
+}
 //Tomo los valores del modal:
-var addNew = () => {
+const addNew = () => {
     //Me interesa una cosa que no me acuerdo sobre instanciamiento de datos
-    const name = document.getElementById('name')
-    const email = document.getElementById('email')
-    const address = document.getElementById('address')
-    const phone = document.getElementById('phone')
-    
-//validacion pedorra, solo ve si esta todo completo.
-//cuando hay cosas incompletas, limpia todos los campos (arreglar)
-    if (name.value.length && email.value.length && address.value.length && phone.value.length != 0) {
+    let name = document.getElementById('name')
+    let email = document.getElementById('email')
+    let address = document.getElementById('address')
+    let phone = document.getElementById('phone')
+
+    if (isFilled(name) && isFilled(email) && isFilled(address) && isFilled(phone)
+        && emailIsValid(email.value)) {
         const newItem = {"name":name.value, "email":email.value, "address":address.value, "phone": phone.value}
         list.push(newItem) 
         showModal()
@@ -39,9 +43,9 @@ var addNew = () => {
         email.value =""
         address.value =""
         phone.value =""
-        printList()
+        createTr(list)
     } else { 
-        alert("Todos los campos deben estar completos")
+        alert("Chequea los campos para seguir")
     }
 }
 
@@ -56,13 +60,13 @@ const keyPress = (event) => {
 // Esta para editar. Puse cualquiera, debería traer el dato completo en vez de estar vacío
 const editItem = (btn) => {
     showModal()
-    printList()
+    createTr(list)
 }
 
 //Esta es el botón de borrar pero seguro cambia porque esto no va al servidor
 const deleteItem = (btn) => {
     list.splice (btn.id,1)
-    printList()
+    createTr(list)
 }
 
 //Esta es para crear botones. Hay que darles amor, pobres chiquitines.
@@ -94,9 +98,6 @@ const createTr = (list) => {
     })
   }
 
-const printList = () => {
-    createTr(list)
-}
 
 //La función de filtrado también puede ir aparte tranquilamente
 //La base es esta pero no sé debería haber otra api con keywords o algo???
@@ -108,4 +109,6 @@ const filter = () => {
         fetch ('/api/users')
             .then(res=>res.json())
             .then(res=>printList())
-}}
+}
+}
+
