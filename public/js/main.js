@@ -11,35 +11,52 @@ const showModal = () => {
 //De acá para adelante vamos a trabajar con datos. Tal vez queramos hacer módulos o algo así
 let list = []
 
+// Este será un nuevo tipo de dato - también tendría que tener un id pero no pensé cómo generarlo
+class newItem {
+    constructor(name, email, address, phone) {
+        this.name = name; //tu first_name es que se recibe por parámetro.
+        this.email = email; //this es un elemento referencial, llama a la función en la que estoy.
+        this.address = address;
+        this.phone = phone
+    }
+}
+
 //Acá le podría pasar list por parámetro? quiero? Sería traer de la api y poner todo en pantalla
 const initialize = () => {
     fetch('/api/users')
         .then(response => response.json())
         .then(res => {
-            list = res.users
+            list = res
             printList()
         })
 }
 
 //Tomo los valores del modal:
 const addNew = () => {
-    //Me interesa una cosa que no me acuerdo sobre instanciamiento de datos
     const name = document.getElementById('name')
     const email = document.getElementById('email')
     const address = document.getElementById('address')
     const phone = document.getElementById('phone')
-    const newItem = {"name":name.value, "email":email.value, "address":address.value, "phone": phone.value}
-    //Esto se podrá hacer más prolijo?
-    name.value =""
-    email.value =""
-    address.value =""
-    phone.value =""
-    // Acá vamos a querer validación, veremos cómo se hace
-    // valida todos los campos completos y algunas características que están en el enunciado 
-    list.push(newItem) //esto seguro será reemplazado por push al servidor
-    showModal()
-    printList()
+    //  VALIDACIÓN - todo lo que sigue solo me interesa hacerlo si es válido el dato
+    const newEmployee = new newItem (name.value,email.value,address.value,phone.value)
+    fetch ('api/users', {
+        method:'POST',
+        headers: {
+            'Content-Type':'application/json'
+        },
+        body: JSON.stringify(newEmployee)
+    })
+        .then(res => res.json())
+        .then(res => {
+            name.value =""
+            email.value =""
+            address.value =""
+            phone.value =""
+            initialize()
+            showModal()
+        })
 }
+
 
 // Esto sé que hacía algo al apretar enter. Me parece que no lo vamos a querer, 
 // salvo que sea en el último input. O por ahí si verificamos que están todos los campos llenos.
@@ -95,31 +112,6 @@ var createRow = (newItem,index) => {
     return newRow
 }
 
-const createTr = (list) => {
-    let container = document.getElementById("container")
-    container.innerHTML = ''
-    list.forEach(sale => {
-       let tr = document.createElement('tr')
-       Object.keys(sale).forEach( e=> {
-          let td = document.createElement('td')
-          if (e === 'saleDate'){
-             td.innerText = `${sale[e].getFullYear()},${sale[e].getMonth()+1},${sale[e].getDate()}`
-          } else {
-             td.innerText =  sale[e]
-          }
-          tr.appendChild(td)
-       })
-       container.appendChild(tr)
-    })
-} 
-
-
-
-
-
-
-
-
 //La función genérica!!! Querré pasarle la lista por parámetro? Ver
 const printList = () => {
     const container = document.getElementById('container')
@@ -138,3 +130,16 @@ const filter = () => {
             .then(res=>res.json())
             .then(res=>printList())
 }}
+
+/* esto todavía no entiendo cómo usar
+const customFetch = (url, method, payload = '') => {
+    const endpoint = `/api/users/${url}`
+    let options = {
+      method: method,
+      headers: {'Content-Type': 'application/json'}
+    }
+    if(method !== 'GET' && payload) options.body = payload
+    return fetch(endpoint, options)
+      .then( response => response.json())
+}*/
+

@@ -10,7 +10,8 @@ router.get('/', (req, res) => {
 });
 
 // API ROUTES //
-router.get('/api/users', users);
+router.get('/api/users', users.getUser);
+router.post('/api/users', users.newUser)
 
 // NOT FOUND HANDLER //
 router.use((req, res) => {
