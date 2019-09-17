@@ -11,12 +11,22 @@ const showModal = () => {
 //De acá para adelante vamos a trabajar con datos. Tal vez queramos hacer módulos o algo así
 let list = []
 
+// Este será un nuevo tipo de dato - también tendría que tener un id pero no pensé cómo generarlo
+class newItem {
+    constructor(name, email, address, phone) {
+        this.name = name; //tu first_name es que se recibe por parámetro.
+        this.email = email; //this es un elemento referencial, llama a la función en la que estoy.
+        this.address = address;
+        this.phone = phone
+    }
+}
+
 //Acá le podría pasar list por parámetro? quiero? Sería traer de la api y poner todo en pantalla
 const initialize = () => {
     fetch('/api/users')
         .then(response => response.json())
         .then(res => {
-            list = res.users
+            list = res
             createTr(list)
         })
 }
@@ -26,24 +36,32 @@ const emailIsValid = correo => valid.test(correo);
 const isFilled = input => {
    if (input.value.length !=0) {return isFilled}
 }
+
 //Tomo los valores del modal:
 const addNew = () => {
-    //Me interesa una cosa que no me acuerdo sobre instanciamiento de datos
-    let name = document.getElementById('name')
-    let email = document.getElementById('email')
-    let address = document.getElementById('address')
-    let phone = document.getElementById('phone')
-
+    const name = document.getElementById('name')
+    const email = document.getElementById('email')
+    const address = document.getElementById('address')
+    const phone = document.getElementById('phone')
     if (isFilled(name) && isFilled(email) && isFilled(address) && isFilled(phone)
         && emailIsValid(email.value)) {
-        const newItem = {"name":name.value, "email":email.value, "address":address.value, "phone": phone.value}
-        list.push(newItem) 
-        showModal()
-        name.value =""
-        email.value =""
-        address.value =""
-        phone.value =""
-        createTr(list)
+        const newEmployee = new newItem (name.value,email.value,address.value,phone.value)
+        fetch ('api/users', {
+            method:'POST',
+            headers: {
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify(newEmployee)
+        })
+            .then(res => res.json())
+            .then(res => {
+                name.value =""
+                email.value =""
+                address.value =""
+                phone.value =""
+                initialize()
+                showModal()
+            })
     } else { 
         alert("Chequea los campos para seguir")
     }
@@ -74,7 +92,8 @@ var createButton = (classBtn, btnFunction) => {
     btn=document.createElement('button')
     btn.innerText=classBtn
     btn.classList.add(classBtn)
-    btn.onclick=function(){btnFunction(this)}
+    btn.id=index
+    btn.onclick=()=>{btnFunction(this)}
     return btn
 }
 
@@ -111,4 +130,16 @@ const filter = () => {
             .then(res=>printList())
 }
 }
+
+/* esto todavía no entiendo cómo usar
+const customFetch = (url, method, payload = '') => {
+    const endpoint = `/api/users/${url}`
+    let options = {
+      method: method,
+      headers: {'Content-Type': 'application/json'}
+    }
+    if(method !== 'GET' && payload) options.body = payload
+    return fetch(endpoint, options)
+      .then( response => response.json())
+}*/
 
