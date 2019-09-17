@@ -92,7 +92,7 @@ var createButton = (classBtn, btnFunction) => {
     btn=document.createElement('button')
     btn.innerText=classBtn
     btn.classList.add(classBtn)
-    btn.id=index
+    // btn.id=index
     btn.onclick=()=>{btnFunction(this)}
     return btn
 }
