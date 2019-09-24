@@ -28,6 +28,7 @@ const initialize = () => {
         .then(res => {
             list = res
             createTr(list)
+            filterInfo(list,"Ceci Hopper")
         })
 }
 
@@ -65,14 +66,6 @@ const addNew = () => {
     } else { 
         alert("Chequea los campos para seguir")
     }
-}
-
-// Esto sé que hacía algo al apretar enter. Me parece que no lo vamos a querer, 
-// salvo que sea en el último input. O por ahí si verificamos que están todos los campos llenos.
-// también ver que en el filtrado está más piola como queda
-// Veamo
-const keyPress = (event) => {
-    event.code === 'Enter'?addNew():false
 }
 
 // Esta para editar. Puse cualquiera, debería traer el dato completo en vez de estar vacío
@@ -129,20 +122,6 @@ const createTr = (list) => {
     })
   }
 
-
-//La función de filtrado también puede ir aparte tranquilamente
-//La base es esta pero no sé debería haber otra api con keywords o algo???
-const filter = () => {
-    let query = event.target.value
-    if (query.length>=3 || (event.keyCode===13 && query!==lastRequest)) {
-        lastRequest=query
-    //recorro list.name y traigo todo lo que tiene un string que coincide?    
-        fetch ('/api/users')
-            .then(res=>res.json())
-            .then(res=>printList())
-}
-}
-
 /* esto todavía no entiendo cómo usar
 const customFetch = (url, method, payload = '') => {
     const endpoint = `/api/users/${url}`
@@ -155,3 +134,34 @@ const customFetch = (url, method, payload = '') => {
       .then( response => response.json())
 }*/
 
+let lastRequest;
+const handleSearch = () => {
+	let query = event.target.value;
+	if (event.keyCode === 13 && query !== lastRequest && query.length !== 0) {
+        lastRequest = query;
+    }
+};
+
+//el valor de HARCODE se lo estoy dando en el initialize, deberia tomar el valor de QUERY
+//que estoy especificando en la funcion de arriba
+
+var lista = [];
+const filterInfo = (list,harcode) => {
+list.forEach(obj =>{
+    let o = Object.entries(obj);
+    o.forEach(e => {
+        e.forEach(
+            name =>{
+                if (name == harcode) {
+                    //solo busca resultados EXACTOS y los imprime en consola
+                    lista.push(o)
+                }
+            }
+        )    
+        })
+        return lista
+        //no se como imprimir los resultados en pantalla
+    })
+}
+
+console.log(lista)
