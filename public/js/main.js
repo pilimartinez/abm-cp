@@ -76,8 +76,20 @@ const editItem = (btn) => {
 
 //Esta es el botón de borrar pero seguro cambia porque esto no va al servidor
 const deleteItem = (btn) => {
-    list.splice (btn.id,1)
-    createTr(list)
+    // list.splice (btn.id,1)
+    // createTr(list)
+    fetch ('api/users', {
+        method:'DELETE',
+        headers: {
+            'Content-Type':'application/json'
+        },
+        body: 
+    })
+        .then(res => res.json())
+        .then(res => {
+            initialize()
+            showModal()
+        })
 }
 
 //Esta es para crear botones. Hay que darles amor, pobres chiquitines.
