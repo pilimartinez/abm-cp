@@ -12,7 +12,7 @@ router.get('/', (req, res) => {
 // API ROUTES //
 router.get('/api/users', users.getUser);
 router.post('/api/users', users.newUser)
-
+router.get('/api/users/:name', users.getSearchUser);
 // NOT FOUND HANDLER //
 router.use((req, res) => {
 	res.status(404).send('Error');
