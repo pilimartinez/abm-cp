@@ -21,7 +21,7 @@ const newUser = (req, res, next) => {
 	next();
 };
 
-const getUserByid = (req, res, next) => {
+const getUserById = (req, res, next) => {
 	let resUser = users.find((e) => e.id === req.params.id);
 	if (resUser) {
 		res.json(resUser);
@@ -31,14 +31,14 @@ const getUserByid = (req, res, next) => {
 	next();
 };
 
-const deleteUser = (req,res,next) => {
-	let data = req.body
-	let index = ''
-	let resUser = users.find((e,i)=>{
-		index = i 
-		return e.
-	})
-}
+// const deleteUser = (req,res,next) => {
+// 	let data = req.body
+// 	let index = ''
+// 	let resUser = users.find((e,i)=>{
+// 		index = i 
+// 		return 
+// 	})
+// }
 
 const patchUser = (req, res, next) => {
 	let data = req.body
