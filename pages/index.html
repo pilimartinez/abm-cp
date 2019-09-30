@@ -16,7 +16,7 @@
     <a href="#" class="new-data" onclick="showModal()"><i class="fas fa-plus"></i>Add New Employee</a>
     </header>
     <div class="filter-div">
-        <input placeholder="Filter..." onkeyup="handleSearch()">
+        <input placeholder="Filter by name" onkeyup="handleSearch()">
     </div>
     <table class="dataTable">
         <thead>
@@ -30,6 +30,9 @@
         </thead>
         <tbody id="container">
         </tbody>
+        <tbody id="search-result">
+        </tbody>
+        
     </table>   
 </div> 
 <div id="modal">
