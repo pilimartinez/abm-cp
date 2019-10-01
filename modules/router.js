@@ -13,6 +13,8 @@ router.get('/', (req, res) => {
 router.get('/api/users', users.getUser);
 router.post('/api/users', users.newUser)
 router.get('/api/users/:name', users.getSearchUser);
+router.delete('/api/users/delete/:id', users.deleteUser)
+
 // NOT FOUND HANDLER //
 router.use((req, res) => {
 	res.status(404).send('Error');

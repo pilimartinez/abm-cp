@@ -1,4 +1,4 @@
-//Magia Con Bello Modal
+//Modal aparece y desaparece
 const showModal = () => {
     let modal = document.getElementById("modal");
     if (modal.style.display === "block") {
@@ -14,14 +14,13 @@ let list = []
 // Este será un nuevo tipo de dato - también tendría que tener un id pero no pensé cómo generarlo
 class newItem {
     constructor(name, email, address, phone) {
-        this.name = name; //tu first_name es que se recibe por parámetro.
-        this.email = email; //this es un elemento referencial, llama a la función en la que estoy.
+        this.name = name; 
+        this.email = email; 
         this.address = address;
         this.phone = phone
     }
 }
 
-//Acá le podría pasar list por parámetro? quiero? Sería traer de la api y poner todo en pantalla
 const initialize = () => {
     fetch('/api/users')
         .then(response => response.json())
@@ -31,13 +30,14 @@ const initialize = () => {
         })
 }
 
+//Validación
 let valid = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 const emailIsValid = correo => valid.test(correo);
 const isFilled = input => {
    if (input.value.length !=0) {return isFilled}
 }
 
-//Tomo los valores del modal:
+//Tomo los valores del modal y cargo un usuario nuevo:
 const addNew = () => {
     const name = document.getElementById('name')
     const email = document.getElementById('email')
@@ -67,7 +67,7 @@ const addNew = () => {
     }
 }
 
-// Esta para editar. Puse cualquiera, debería traer el dato completo en vez de estar vacío
+// Esta para editar. Puse cualquiera, esto lo tenemos que ajustar con lo de patch user
 const editItem = (btn) => {
     showModal()
     createTr(list)
@@ -76,15 +76,32 @@ const editItem = (btn) => {
 //Esta es el botón de borrar pero seguro cambia porque esto no va al servidor
 const deleteItem = (btn) => {
     list.splice (btn.id,1)
-    createTr(list)
+    createTr(list,'container')
 }
 
+const deleteItem2 = () => {
+        console.log(id)
+        fetch (`api/users/delete/${id}`, {
+            method:'DELETE',
+            headers: {
+                'Content-Type':'application/json'
+            },
+            body: ''
+        })
+            .then(res => res.json())
+            .then(res => {
+                list.splice (btn.id,1)
+                initialize()
+                showModal()
+            })
+    } 
+
 //Esta es para crear botones. Hay que darles amor, pobres chiquitines.
-var createButton = (classBtn, btnFunction) => {
-    btn=document.createElement('button')
+var createButton = (classBtn, btnFunction, btnID) => {
+    btn=document.createElement('a')
     btn.innerText=classBtn
     btn.classList.add(classBtn)
-    // btn.id=index
+    btn.id=btnID
     btn.onclick=()=>{btnFunction(this)}
     return btn
 }
@@ -97,8 +114,8 @@ const createTr = (list,cont) => {
        let tr = document.createElement('tr')
        const containerButtons=document.createElement('td')
        containerButtons.classList.add('button')
-       containerButtons.appendChild(createButton('Edit', editItem))
-       containerButtons.appendChild(createButton('Remove', deleteItem))
+       containerButtons.appendChild(createButton('Edit', editItem, field.id))
+       containerButtons.appendChild(createButton('Remove', deleteItem2, field.id))
        Object.keys(field).forEach( e=> {
           let td = document.createElement('td')
         td.innerText = field[e]
