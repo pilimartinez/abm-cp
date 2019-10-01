@@ -1,6 +1,6 @@
 const users = [
-   {'name': 'ceci hopper', 'email': 'cariciasignificativa@hotmail.com', 'address':'Paseo Colon 678','phone': '45032212','id':'0'},
-   {'name': 'pili lovelace', 'email': 'papitaparaelloro@hotmail.com', 'address':'Caminito 123','phone': '46020289', 'id':'1'}
+   {'name': 'ceci hopper', 'email': 'cariciasignificativa@hotmail.com', 'address':'Paseo Colon 678','phone': '45032212','id':'1'},
+   {'name': 'pili lovelace', 'email': 'papitaparaelloro@hotmail.com', 'address':'Caminito 123','phone': '46020289', 'id':'2'}
 ]
 
 // No me acuerdo para qué usábamos esto :(
@@ -13,7 +13,7 @@ const newUser = (req, res, next) => {
 	let data = req.body;
 	//acá solamente valido que estén completos los datos, podría ser el formato también
 	if (data.hasOwnProperty('name') && data.hasOwnProperty('email') && data.hasOwnProperty('address') && data.hasOwnProperty('phone')) {
-		data.id = users.length + 1;
+		data.id = users.length+1;
 		users.push(data);
 		res.status('201').json(`recibido correctamente`);
 	} else {

@@ -79,9 +79,9 @@ const deleteItem = (btn) => {
     createTr(list,'container')
 }
 
-const deleteItem2 = () => {
-        console.log(id)
-        fetch (`api/users/delete/${id}`, {
+const deleteItem2 = (btn) => {
+        console.log(btn.btn)
+        fetch (`api/users/delete/`, {
             method:'DELETE',
             headers: {
                 'Content-Type':'application/json'
@@ -98,7 +98,7 @@ const deleteItem2 = () => {
 
 //Esta es para crear botones. Hay que darles amor, pobres chiquitines.
 var createButton = (classBtn, btnFunction, btnID) => {
-    btn=document.createElement('a')
+    btn=document.createElement('button')
     btn.innerText=classBtn
     btn.classList.add(classBtn)
     btn.id=btnID
@@ -117,10 +117,10 @@ const createTr = (list,cont) => {
        containerButtons.appendChild(createButton('Edit', editItem, field.id))
        containerButtons.appendChild(createButton('Remove', deleteItem2, field.id))
        Object.keys(field).forEach( e=> {
-          let td = document.createElement('td')
-        td.innerText = field[e]
-          tr.appendChild(td)
-          tr.appendChild(containerButtons)
+            let td = document.createElement('td')
+            td.innerText = field[e]
+            tr.appendChild(td)
+            tr.appendChild(containerButtons)
        })
        container.appendChild(tr)
     })
