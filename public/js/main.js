@@ -80,7 +80,7 @@ const deleteItem = (btn) => {
 }
 
 const deleteItem2 = (btn) => {
-        console.log(btn.btn)
+        console.log(btn.btn.id)
         fetch (`api/users/delete/`, {
             method:'DELETE',
             headers: {
@@ -112,16 +112,16 @@ const createTr = (list,cont) => {
     container.innerHTML = ''
     list.forEach(field => {
        let tr = document.createElement('tr')
-       const containerButtons=document.createElement('td')
-       containerButtons.classList.add('button')
-       containerButtons.appendChild(createButton('Edit', editItem, field.id))
-       containerButtons.appendChild(createButton('Remove', deleteItem2, field.id))
        Object.keys(field).forEach( e=> {
             let td = document.createElement('td')
             td.innerText = field[e]
             tr.appendChild(td)
-            tr.appendChild(containerButtons)
-       })
+        })
+       const containerButtons=document.createElement('td')
+       containerButtons.classList.add('button')
+       containerButtons.appendChild(createButton('Edit', editItem, field.id))
+       containerButtons.appendChild(createButton('Remove', deleteItem2, field.id))
+       tr.appendChild(containerButtons)
        container.appendChild(tr)
     })
   }
