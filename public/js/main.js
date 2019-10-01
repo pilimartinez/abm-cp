@@ -24,10 +24,9 @@ class newItem {
 const initialize = () => {
     fetch('/api/users')
         .then(response => response.json())
-        .then(res => {
+        .then(res =>{ 
             list = res
-            createTr(list,'container')
-        })
+            createTable(list,'container')})
 }
 
 //Validación
@@ -70,61 +69,70 @@ const addNew = () => {
 // Esta para editar. Puse cualquiera, esto lo tenemos que ajustar con lo de patch user
 const editItem = (btn) => {
     showModal()
-    createTr(list)
+    addNew()
 }
 
-//Esta es el botón de borrar pero seguro cambia porque esto no va al servidor
-const deleteItem = (btn) => {
-    list.splice (btn.id,1)
-    createTr(list,'container')
-}
+//Esta es el botón de borrar como lo hacíamos antes
+// const deleteItem = (btn) => {
+//     let result = list.find((e,i) => e.id == btn)
+//     let index = list.indexOf(result)
+//     if(index !== -1){
+//         list.splice(list.indexOf(result),1)
+//         // res
+//     } else {
+//         // respuesta con
+//     }
+//     createTable(list,'container')
+// }
 
-const deleteItem2 = (btn) => {
-        console.log(btn.btn.id)
-        fetch (`api/users/delete/`, {
+const deleteItem = (id) => {
+    console.log(id)
+        fetch (`api/users/delete/${id}`, {
             method:'DELETE',
             headers: {
                 'Content-Type':'application/json'
-            },
-            body: ''
+            }
         })
             .then(res => res.json())
             .then(res => {
-                list.splice (btn.id,1)
                 initialize()
                 showModal()
             })
     } 
 
 //Esta es para crear botones. Hay que darles amor, pobres chiquitines.
-var createButton = (classBtn, btnFunction, btnID) => {
+var createButton = (classBtn, btnFunction, id) => {
     btn=document.createElement('button')
     btn.innerText=classBtn
     btn.classList.add(classBtn)
-    btn.id=btnID
-    btn.onclick=()=>{btnFunction(this)}
+    btn.id=id
+    btn.onclick=()=>{btnFunction(id)}
     return btn
 }
 
 // crea nueva row, botones incluidos
-const createTr = (list,cont) => {
+const createTable = (list,cont) => {
     let container = document.getElementById(cont)
     container.innerHTML = ''
-    list.forEach(field => {
-       let tr = document.createElement('tr')
-       Object.keys(field).forEach( e=> {
-            let td = document.createElement('td')
-            td.innerText = field[e]
-            tr.appendChild(td)
-        })
-       const containerButtons=document.createElement('td')
-       containerButtons.classList.add('button')
-       containerButtons.appendChild(createButton('Edit', editItem, field.id))
-       containerButtons.appendChild(createButton('Remove', deleteItem2, field.id))
-       tr.appendChild(containerButtons)
-       container.appendChild(tr)
+    list.forEach((item,index)=>{
+        container.appendChild(createRow(item,index))
     })
-  }
+}
+
+const createRow = (item) => {
+    const tr = document.createElement('tr')
+    Object.keys(item).forEach(e=>{
+        const td = document.createElement('td')
+        td.innerText = item[e]
+        tr.appendChild(td)
+    })
+    const containerButtons=document.createElement('td')
+    // containerButtons.classList.add('button')
+    containerButtons.appendChild(createButton('Edit', editItem, item.id))
+    containerButtons.appendChild(createButton('Remove', deleteItem, item.id))
+    tr.appendChild(containerButtons)
+    return tr
+}
 
 let lastRequest;
 const handleSearch = () => {
@@ -139,6 +147,6 @@ const handleSearch = () => {
 const userSearch = (name) => {
     return fetch(`/api/users/${name}`)
     .then((res) => res.json())
-    .then((result) => createTr(result, 'search-result'))
+    .then((result) => createTable(result, 'search-result'))
 
   }

@@ -1,6 +1,8 @@
 const users = [
-   {'name': 'ceci hopper', 'email': 'cariciasignificativa@hotmail.com', 'address':'Paseo Colon 678','phone': '45032212','id':'1'},
-   {'name': 'pili lovelace', 'email': 'papitaparaelloro@hotmail.com', 'address':'Caminito 123','phone': '46020289', 'id':'2'}
+   {'name': 'ceci hopper', 'email': 'cariciasignificativa@hotmail.com', 'address':'Paseo Colon 678','phone': '45032212','id':1},
+   {'name': 'pili lovelace', 'email': 'papitaparaelloro@hotmail.com', 'address':'Caminito 123','phone': '46020289', 'id':2},
+   {'name': 'quiero morir', 'email': 'papitaparaelloro@hotmail.com', 'address':'Caminito 123','phone': '46020289', 'id':3},
+   {'name': 'no entiendo', 'email': 'papitaparaelloro@hotmail.com', 'address':'Caminito 123','phone': '46020289', 'id':4},
 ]
 
 // No me acuerdo para qué usábamos esto :(
@@ -33,17 +35,29 @@ const newUser = (req, res, next) => {
 // 	next();
 // };
 
-const deleteUser = (req,res,next) => {
-	let index = ''
-	let resUser = users.find((e,i)=>{
-		index = i 
-		return e.id === req.params.id})
+// const deleteUser = (req,res,next) => {
+// 	let index = ''
+// 	let resUser = users.find((e,i)=>{
+// 		index = i 
+// 		return e.id === req.params.id})
 
-	if (resUser) {
-		users.splice(1,index)
-		res.status(200).json(users)
-	} else {
-		res.status(404).send('no encontramos al usuario');
+// 	if (resUser) {
+// 		users.splice(1,index)
+// 		res.status(200).json(users)
+// 	} else {
+// 		res.status(404).send('no encontramos al usuario');
+// 	}
+// 	next();
+// }
+
+const deleteUser = (req,res,next) => {
+    let result = list.find((e,i) => e.id == btn)
+    let index = list.indexOf(result)
+    if(index !== -1){
+        users.splice(list.indexOf(result),1)
+        res.status(200).json(users)
+    } else {
+        res.status(404).send('no encontramos al usuario');
 	}
 	next();
 }
