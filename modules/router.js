@@ -12,8 +12,10 @@ router.get('/', (req, res) => {
 // API ROUTES //
 router.get('/api/users', users.getUser);
 router.post('/api/users', users.newUser)
-router.get('/api/users/:name', users.getSearchUser);
+router.get('/api/users/byname/:name', users.getSearchUser);
+router.get('/api/users/byid/:id', users.getUserById)
 router.delete('/api/users/delete/:id', users.deleteUser)
+router.patch('/api/users/edit/:id', users.editUser)
 
 // NOT FOUND HANDLER //
 router.use((req, res) => {
