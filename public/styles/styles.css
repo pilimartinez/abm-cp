@@ -114,14 +114,14 @@ body {
   display: flex;
   justify-content: center;
 }
-#modal footer .cancel-btn, #modal footer .add-btn {
+#modal footer .cancel-btn, #modal footer .add-btn, #modal footer .Edit {
   margin: 5px;
   padding: 5px 15px;
   border-radius: 5px;
   color: black;
   background-color: greenyellow;
 }
-#modal footer .cancel-btn:hover, #modal footer .add-btn:hover {
+#modal footer .cancel-btn:hover, #modal footer .add-btn:hover, #modal footer .Edit:hover {
   background-color: pink;
   transition: 0.4s;
 }

@@ -60,6 +60,9 @@ const addNew = () => {
 }
 
 const editItem = (id) => {
+    const editButton=document.getElementById('modal-button')
+    editButton.innerHTML=''
+    editButton.appendChild(createButton('Edit', editItem2, id))
     showModal()
     let user =''
     fetch(`api/users/byid/${id}`)
@@ -71,15 +74,46 @@ const editItem = (id) => {
             document.getElementById('address').value=user.address
             document.getElementById('phone').value=user.phone
         })
-        
-    fetch (`api/users/edit/${id}`, {
-        method:'PATCH',
-        headers: {'Content-Type':'application/json'},
-        body:JSON.stringify(user)        
-    })
-        .then(res => res.json())
-        .then(res => initialize())
-} 
+}
+
+const editItem2 = (id) => {    
+    const name = document.getElementById('name')
+    const email = document.getElementById('email')
+    const address = document.getElementById('address')
+    const phone = document.getElementById('phone')
+    if (isFilled(name) && isFilled(email) && isFilled(address) && isFilled(phone)
+        && emailIsValid(email.value)) {
+        const newEmployee = new newItem (name.value.toString().toLowerCase(),email.value,address.value,phone.value)
+        fetch (`/api/users/edit/${id}`, {
+            method:'PATCH',
+            headers: {
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify(newEmployee)
+        })
+            .then(res => res.json())
+            .then(res => {
+                name.value =""
+                email.value =""
+                address.value =""
+                phone.value =""
+                initialize()
+                showModal()
+            })
+    } else { 
+        alert("Chequea los campos para seguir")
+    }
+}
+
+
+    // fetch (`api/users/edit/${id}`, {
+    //     method:'PATCH',
+    //     headers: {'Content-Type':'application/json'},
+    //     body:JSON.stringify(user)        
+    // })
+    //     .then(res => res.json())
+    //     .then(res => initialize())
+
 
 const deleteItem = (id) => {
     fetch (`api/users/delete/${id}`, {

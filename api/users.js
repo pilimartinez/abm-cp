@@ -50,17 +50,17 @@ const deleteUser = (req,res,next) => {
 }
 
 const editUser = (req, res, next) => {
-	const index = ''
-	const data = req.body
-	const resUser = users.find((e,i) => {
+	let data = req.body
+	let index = ''
+	let resUser = users.find((e,i) => {
 		index=i
 		return e.id === req.params.id});
 
 	if (resUser) {
-		const editedUser = {...resUser,...data} //toma lo que había y lo pisa con las propiedades
-		// de lo que sea que esté viniendo
+		let editedUser = {...resUser,...data}
 		users.splice(index,1)
 		users.push(editedUser)
+		res.status(200).json(users)
 	} else {
 		res.status(404).send('no encontramos al usuario');
 	}
